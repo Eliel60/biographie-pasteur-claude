@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasteur Claude Mwamba Mbayo | Plateforme Officielle & Ministère</title>
+    
+    <!-- TailWind CSS & Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons pour des icônes vectorielles modernes et fluides -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Remplacement global de 'white' par un blanc cassé céleste ultra-doux anti-reflets
+                        white: '#fafbfc', 
+                        celestial: {
+                            50: '#f2f7fa',  /* Fond bleu ciel très doux et mat */
+                            100: '#e5f0f6', /* Ciel doux clair */
+                            200: '#cae1f0', /* Accent ciel intermédiaire */
+                            300: '#9ec9e6',
+                            400: '#6ca9d6',
+                            500: '#428bc1', /* Bleu ciel d'azur matisé */
+                            600: '#3272a0',
+                            700: '#295b81',
+                            800: '#234a69', /* Bleu céleste profond */
+                            900: '#183146', /* Bleu nuit d'encre doux */
+                            950: '#0e1d2b', /* Fond mode sombre céleste mat */
+                        },
+                        gold: {
+                            100: '#fef9c3',
+                            400: '#fbbf24', /* Or céleste doux */
+                            500: '#f59e0b',
+                            soft: '#fef3c7'
+                        },
+                        theological: {
+                            gold: '#c29d2b', /* Or vieilli théologique */
+                            cream: '#f5f8fa'  /* Crème azuréenne mate */
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Cinzel', 'serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #183146;
+            --primary-soft: #234a69;
+            --gold: #428bc1;
+            --gold-soft: #cae1f0;
+            --background: #f2f7fa; /* Fond mat et reposant */
+            --white: #fafbfc;      /* Blanc adouci anti-fatigue oculaire */
+            --text: #2c3a47;
+            --muted: #6b7c93;
+            --shadow: 0 20px 40px rgba(24, 49, 70, 0.03);
+        }
+
+        /* Transitions fluides pour l'interactivité */
+        .transition-all-300 {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Personnalisation de la barre de défilement aux nuances de bleu ciel mat */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f2f7fa;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ec9e6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #428bc1;
+        }
+
+        /* Animation d'onde douce pour les symboles spirituels */
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-wave-slow {
+            animation: wave 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-celestial-50 dark:bg-celestial-950 text-celestial-900 dark:text-celestial-100 font-serif selection:bg-celestial-200 selection:text-celestial-950 dark:selection:text-white transition-colors duration-300">
+
+<!-- SYSTÈME DE NOTIFICATION TOAST -->
+<div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-celestial-900 text-white dark:bg-white dark:text-celestial-950 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 font-sans text-sm border border-celestial-300">
+    <i data-lucide="check-circle-2" class="text-celestial-300 w-5 h-5"></i>
+    <span id="toast-message">Action effectuée avec succès</span>
+</div>
+
+<!-- CONTRÔLEUR D'AMBIANCE SPIRITUELLE (Synthétiseur Web Audio) -->
+<div class="fixed bottom-6 left-6 z-40 font-sans">
+    <div class="bg-white/95 dark:bg-celestial-900/95 p-3 rounded-2xl shadow-xl border border-celestial-100 dark:border-celestial-850 flex items-center gap-3 backdrop-blur">
+        <button id="synth-toggle" onclick="toggleAmbience()" class="w-10 h-10 rounded-full bg-celestial-500 hover:bg-celestial-600 dark:bg-celestial-600 text-white flex items-center justify-center hover:scale-105 transition-transform" title="Musique d'ambiance contemplative">
+            <i data-lucide="music" class="w-5 h-5" id="synth-icon"></i>
+        </button>
+        <div class="flex flex-col text-xs pr-1">
+            <span class="font-semibold text-celestial-900 dark:text-white">Ambiance Céleste</span>
+            <span class="text-celestial-500 dark:text-celestial-300 text-[10px]" id="synth-status">Désactivée</span>
+        </div>
+        <input type="range" id="synth-volume" min="0" max="0.1" step="0.01" value="0.04" class="w-16 h-1 accent-celestial-500" oninput="adjustVolume(this.value)">
+    </div>
+</div>
+
+<!-- BARRE DE NAVIGATION (NAVBAR) -->
+<nav class="sticky top-0 z-30 bg-white/90 dark:bg-celestial-950/95 backdrop-blur-md border-b border-celestial-100 dark:border-celestial-900 py-3.5 px-6 transition-all duration-300 shadow-sm">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="#" class="font-display font-bold tracking-widest text-celestial-800 dark:text-celestial-200 text-sm sm:text-base flex items-center gap-3">
+            <!-- EMPLACEMENT LOGO D'ÉGLISE (NAVBAR) -->
+            <!-- Pour insérer votre vrai fichier logo : décommentez la balise img ci-dessous et masquez le SVG -->
+            <!-- <img src="images/logo-church-mini.png" alt="Logo ECR" class="w-8 h-8 object-contain"> -->
+            <div class="w-8 h-8 text-celestial-500 dark:text-celestial-300 flex items-center justify-center" title="Logo Église Christ Rédempteur">
+                <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-current">
+                    <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="4"/>
+                    <path d="M50 15 L50 85 M25 38 L75 38" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M35 70 Q50 50 65 70" stroke="currentColor" stroke-width="3"/>
+                </svg>
+            </div>
+            <span class="hidden xs:inline text-celestial-900 dark:text-white font-semibold">Pst. Claude Mwamba</span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-8 font-sans text-xs tracking-wider uppercase">
+            <a href="#bio" class="text-celestial-700 dark:text-celestial-200 hover:text-celestial-500 dark:hover:text-celestial-300 transition-colors font-medium">Biographie</a>
+            <a href="#timeline" class="text-celestial-700 dark:text-celestial-200 hover:text-celestial-500 dark:hover:text-celestial-300 transition-colors font-medium">Parcours</a>
+            <a href="#formation" class="text-celestial-700 dark:text-celestial-200 hover:text-celestial-500 dark:hover:text-celestial-300 transition-colors font-medium">Formations</a>
+            <a href="#prayer-wall" class="text-celestial-700 dark:text-celestial-200 hover:text-celestial-500 dark:hover:text-celestial-300 transition-colors font-medium">Livre d'or</a>
+            <a href="#contact" class="text-celestial-700 dark:text-celestial-200 hover:text-celestial-500 dark:hover:text-celestial-300 transition-colors font-medium">Intercession</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <!-- Bouton Thème Jour/Nuit -->
+            <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-celestial-100 dark:bg-celestial-900 hover:bg-celestial-200 dark:hover:bg-celestial-800 text-celestial-700 dark:text-celestial-300 transition-colors" title="Changer le thème">
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+            </button>
+            <a href="#contact" class="hidden sm:inline-flex font-sans text-[11px] tracking-wider uppercase font-semibold bg-celestial-500 hover:bg-celestial-600 text-white px-4 py-2 rounded shadow transition-all">
+                Requête de prière
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- SECTION D'ACCUEIL (HERO) -->
+<header class="relative min-h-[95vh] flex items-center justify-center px-4 py-16 overflow-hidden" style="background-image: linear-gradient(to bottom, rgba(242, 247, 25a, 0.96), rgba(242, 247, 250, 0.99)), url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center;">
+    <div class="absolute inset-0 bg-grid-white/[0.05] bg-[size:30px_30px]"></div>
+    
+    <!-- Nuages/Lumière céleste déco en arrière-plan -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-celestial-300/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-celestial-200/20 rounded-full blur-3xl"></div>
+
+    <div class="relative z-10 max-w-4xl text-center space-y-6">
+        
+        <!-- EMPLACEMENT DU GRAND LOGO DE L'ÉGLISE (HERO) -->
+        <!-- Remplacer le bloc ci-dessous par : <img src="images/logo-church-large.png" alt="Logo de l'Église" class="w-24 h-24 mx-auto object-contain animate-wave-slow"> -->
+        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full border-2 border-celestial-400 text-celestial-600 bg-white/60 mb-2 animate-wave-slow" title="Crest Officiel Église Christ Rédempteur">
+            <svg viewBox="0 0 120 120" class="w-16 h-16 fill-none stroke-current" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M60 10 L60 110 M30 45 L90 45" stroke-width="5" stroke="currentColor"/>
+                <path d="M40 90 C 50 82, 70 82, 80 90 C 90 82, 100 85, 110 90" stroke-width="2"/>
+                <path d="M40 90 L40 100 C 60 92, 80 92, 110 100 L110 90" stroke-width="2"/>
+                <path d="M50 30 Q60 15 70 30 T50 30" fill="currentColor" opacity="0.15"/>
+            </svg>
+        </div>
+        
+        <p class="font-sans text-xs tracking-[0.3em] uppercase text-celestial-700 font-semibold">Serviteur de Dieu · Église Christ Rédempteur</p>
+        <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl text-celestial-950 font-normal leading-tight">
+            Pasteur Claude <br>
+            <span class="text-celestial-600 dark:text-celestial-400 font-semibold">Mwamba Mbayo</span>
+        </h1>
+        <div class="w-24 h-[1.5px] bg-celestial-400 mx-auto"></div>
+        <p class="text-lg sm:text-2xl font-light text-celestial-800 max-w-3xl mx-auto italic">
+            « Consacré Pasteur à la Pentecôte 2026 · Un parcours marqué par la fidélité, l’évangélisation et le service du Seigneur. »
+        </p>
+        <div class="pt-6 flex flex-wrap justify-center gap-4 font-sans text-xs tracking-wider uppercase">
+            <a href="#bio" class="bg-celestial-500 hover:bg-celestial-600 text-white px-8 py-3.5 rounded-lg shadow-lg hover:shadow-celestial-300/40 font-semibold transition-all">
+                Lire la Biographie
+            </a>
+            <a href="#prayer-wall" class="bg-white hover:bg-celestial-100 border border-celestial-250 text-celestial-800 px-8 py-3.5 rounded-lg transition-all shadow-sm">
+                Livre d'or de Consécration
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- CONTENEUR PRINCIPAL DE LA BIOGRAPHIE -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24" id="bio">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        
+        <!-- COLONNE GAUCHE : CARTES PHOTOS & REPERES (SIDEBAR) -->
+        <aside class="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start">
+            
+            <!-- PHOTO 1: PASTEUR -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-xl border border-celestial-100 transition-all duration-500 hover:-translate-y-1 hover:shadow-celestial-200/50">
+                <div class="aspect-[3/4] w-full overflow-hidden bg-celestial-50">
+                    <img src="images/pasteur.jpg" alt="Pasteur Claude Mwamba Mbayo" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600';">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-celestial-900/90 via-celestial-900/30 to-transparent flex flex-col justify-end p-6">
+                    <span class="font-sans text-[10px] tracking-widest uppercase text-celestial-200 font-bold">Consécration Officielle</span>
+                    <h3 class="font-display text-xl text-white mt-1">Pasteur Claude Mwamba Mbayo</h3>
+                    <p class="font-sans text-[11px] text-celestial-100 mt-0.5">Pentecôte 2026</p>
+                </div>
+            </div>
+
+            <!-- PHOTO 2: FAMILLE -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white shadow-xl border border-celestial-100 transition-all duration-500 hover:-translate-y-1">
+                <div class="aspect-[3/4] w-full overflow-hidden bg-celestial-50">
+                    <img src="images/famille.jpg" alt="Pasteur Claude et Jolie Bitota Mwamba" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600';">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-celestial-900/90 via-celestial-900/30 to-transparent flex flex-col justify-end p-6">
+                    <span class="font-sans text-[10px] tracking-widest uppercase text-celestial-200 font-bold">Famille & Sagesse</span>
+                    <h3 class="font-display text-lg text-white mt-1">Pst. Claude & Jolie Bitota</h3>
+                    <p class="font-sans text-[11px] text-celestial-100 mt-0.5">Unis pour le Service du Royaume</p>
+                </div>
+            </div>
+
+            <!-- CARTE REPERES SPIRITUELS -->
+            <div class="bg-white dark:bg-celestial-900 rounded-2xl p-6 shadow-xl border border-celestial-100 dark:border-celestial-850 space-y-4">
+                <div class="flex items-center justify-between border-b border-celestial-100 dark:border-celestial-800 pb-3">
+                    <h4 class="font-display text-sm tracking-wider uppercase text-celestial-700 dark:text-celestial-300 font-bold">Repères Spirituels</h4>
+                    <div class="w-6 h-6 text-celestial-500">
+                        <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-current" stroke-width="6">
+                            <path d="M50 10 L50 90 M20 40 L80 40"/>
+                            <path d="M30 80 Q50 60 70 80" stroke-width="4"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-xs font-sans">
+                    <div>
+                        <p class="text-celestial-400 dark:text-celestial-400 uppercase tracking-widest text-[9px] font-bold">Conversion</p>
+                        <p class="font-semibold text-celestial-900 dark:text-white mt-1">24 Décembre 1998</p>
+                    </div>
+                    <div>
+                        <p class="text-celestial-400 dark:text-celestial-400 uppercase tracking-widest text-[9px] font-bold">Consécration</p>
+                        <p class="font-semibold text-celestial-900 dark:text-white mt-1">Pentecôte 2026</p>
+                    </div>
+                    <div>
+                        <p class="text-celestial-400 dark:text-celestial-400 uppercase tracking-widest text-[9px] font-bold">Épouse</p>
+                        <p class="font-semibold text-celestial-900 dark:text-white mt-1">Jolie Bitota Mwamba</p>
+                    </div>
+                    <div>
+                        <p class="text-celestial-400 dark:text-celestial-400 uppercase tracking-widest text-[9px] font-bold">Filiation</p>
+                        <p class="font-semibold text-celestial-900 dark:text-white mt-1">Cinq Enfants</p>
+                    </div>
+                    <div class="col-span-2">
+                        <p class="text-celestial-400 dark:text-celestial-400 uppercase tracking-widest text-[9px] font-bold">Affiliation</p>
+                        <p class="font-semibold text-celestial-900 dark:text-white mt-1">Église Christ Rédempteur, Likasi, RDC</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- COLONNE DROITE : TEXTE OFFICIEL DE LA BIOGRAPHIE -->
+        <article class="lg:col-span-8 space-y-8 leading-relaxed text-lg text-justify text-celestial-800 dark:text-celestial-200">
+            <div class="space-y-4 text-left">
+                <p class="font-sans text-xs tracking-widest uppercase text-celestial-500 font-bold">Parcours de Grâce</p>
+                <h2 class="font-display text-3xl sm:text-5xl text-celestial-950 dark:text-white font-normal">
+                    La Vie d'un Homme <br>
+                    <span class="text-celestial-600 dark:text-celestial-400 italic">consacré au Très-Haut</span>
+                </h2>
+                <div class="w-16 h-1 bg-celestial-400"></div>
+            </div>
+
+            <p class="first-letter:text-5xl first-letter:font-display first-letter:text-celestial-500 first-letter:float-left first-letter:mr-3 first-letter:font-bold">
+                Le Pasteur Claude Mwamba Mbayo est né dans une famille de onze enfants, dont il est le neuvième. Dès son jeune âge, Dieu posa Son regard sur lui et le conduisit dans le chemin du salut. Il reçut le Seigneur Jésus-Christ comme Seigneur et Sauveur personnel le 24 décembre 1998, jour mémorable qui marqua également son baptême au sein de la 30e Communauté Pentecôtiste au Congo.
+            </p>
+
+            <p>
+                Animé très tôt d’une passion profonde pour l’œuvre de Dieu et le discipolat, il devient cofondateur du <strong>Ministère Chrétien pour la Promotion du Discipolat, en sigle MCPD</strong>. Son engagement, sa fidélité et son attachement à la Parole de Dieu l’amènent à servir avec dévouement dans plusieurs départements de l’Église.
+            </p>
+
+            <p>
+                En 2006, il est consacré Diacre à l’Église Sion Golf sous la direction du Révérend Pasteur Étienne Mukalay, marquant ainsi une étape importante dans son parcours ministériel.
+            </p>
+
+            <p>
+                Le Pasteur Claude Mwamba Mbayo est marié à Madame Jolie Bitota Mwamba, avec qui il partage la grâce d’une famille bénie de cinq enfants : trois filles et deux garçons. Son foyer constitue un véritable soutien dans l’accomplissement de l’appel divin et du ministère que le Seigneur lui a confié.
+            </p>
+
+            <!-- BLOCKQUOTE INTERACTIVE METTANT EN VALEUR LA NOUVELLE CITATION -->
+            <blockquote class="relative bg-white dark:bg-celestial-900 border-l-4 border-celestial-400 p-8 rounded-r-2xl shadow-lg my-10 group overflow-hidden">
+                <div class="absolute top-2 right-4 text-celestial-300/10 font-display text-9xl pointer-events-none select-none">“</div>
+                <p class="font-serif italic text-xl sm:text-2xl text-celestial-950 dark:text-white leading-relaxed relative z-10 mb-4">
+                    « Ce n’est ni par la puissance, ni par la force, mais c’est par Mon Esprit, dit l’Éternel des armées. »
+                </p>
+                <span class="font-sans text-xs tracking-wider uppercase font-semibold text-celestial-600 dark:text-celestial-400">— Zacharie 4:6</span>
+            </blockquote>
+
+            <p>
+                Tout au long de son parcours spirituel, il a occupé plusieurs responsabilités au sein de l’Église avec fidélité et humilité. Il a notamment servi dans le Département de l’Éducation Chrétienne comme Président de la JPC ainsi que Responsable départemental dudit département. Il a également exercé les fonctions de Secrétaire du Département de l’Éducation Chrétienne dans la section Petit-Troupeau, sous la conduite du Révérend Pasteur Germain Kibambe.
+            </p>
+
+            <p>
+                Poussé par un profond zèle pour l’évangélisation et le salut des âmes, il a servi comme Président et Responsable du Département d’Évangélisation de l’Église Sion, avant d’être nommé Vice-Président du Département d’Évangélisation de la section Petit-Troupeau.
+            </p>
+
+            <p>
+                Dans le cadre universitaire, il a également œuvré au sein des cités universitaires comme Responsable de l’Intercession et de l’Évangélisation à la cellule <strong>INTERFAC</strong> de l’UNILU, sous la coordination du frère Billy Mwepu, aujourd’hui Pasteur à Fungurume.
+            </p>
+
+            <!-- ENCART DE DEVOTION ET MEDITATION INTERACTIF -->
+            <section class="bg-gradient-to-br from-celestial-600 to-celestial-800 rounded-2xl p-6 sm:p-8 text-white border border-celestial-400 shadow-2xl relative overflow-hidden font-sans">
+                <div class="absolute -right-12 -bottom-12 text-white/5 text-[150px] font-serif select-none pointer-events-none">🕊</div>
+                
+                <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="book-open" class="text-white w-5 h-5"></i>
+                        <span class="text-xs tracking-widest uppercase font-bold text-celestial-100">Méditation & Édification</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="verse-category" class="text-[10px] uppercase tracking-wider text-celestial-200">Thème :</label>
+                        <select id="verse-category" onchange="filterVerses(this.value)" class="bg-celestial-700/80 text-xs border border-white/10 rounded px-2 py-1 focus:outline-none text-white">
+                            <option value="all">Tous les Versets</option>
+                            <option value="foi">Foi & Confiance</option>
+                            <option value="force">Force & Courage</option>
+                            <option value="esprit">Saint-Esprit & Onction</option>
+                            <option value="paix">Paix & Espérance</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="min-h-[100px] flex flex-col justify-center mb-6">
+                    <p id="verseBox" class="font-serif text-lg sm:text-xl italic text-white leading-relaxed transition-all duration-300">
+                        « Ce n’est ni par la puissance, ni par la force, mais c’est par Mon Esprit, dit l’Éternel des armées. »
+                    </p>
+                    <p id="refBox" class="font-display text-sm text-celestial-200 mt-4 tracking-wider">
+                        — Zacharie 4:6
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="nextVerse()" class="inline-flex items-center gap-2 bg-white hover:bg-celestial-50 text-celestial-800 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                        <i data-lucide="shuffle" class="w-4 h-4 text-celestial-650"></i> Verset Suivant
+                    </button>
+                    <button onclick="readVerseAloud()" class="inline-flex items-center gap-2 bg-celestial-700/50 hover:bg-celestial-700 text-white border border-white/10 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors" title="Écouter la parole">
+                        <i data-lucide="volume-2" class="w-4 h-4"></i> Écouter
+                    </button>
+                    <button onclick="copyVerse()" class="inline-flex items-center gap-2 bg-celestial-700/50 hover:bg-celestial-700 text-white border border-white/10 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                        <i data-lucide="copy" class="w-4 h-4"></i> Copier
+                    </button>
+                </div>
+            </section>
+
+            <p>
+                En décembre 2020, il arrive à Likasi dans le cadre de l’ouverture d’un bureau de l’agence de l’entreprise au sein de laquelle il exerce ses activités professionnelles. Cependant, conduit de manière admirable par la main souveraine de Dieu, il rejoint en 2021 l’<strong>Église Christ Rédempteur</strong>, l'année même durant laquelle sa famille l'y rejoint également pour bâtir un service commun.
+            </p>
+
+            <p>
+                En 2022, une importante mission évangélique lui est confiée : l’implantation de l’assemblée <strong>Christ Rédempteur 7</strong>. À la tête d’une équipe vaillante de quinze évangélistes dévoués, parmi lesquels figurait également le Pasteur Guy (consacré avec lui le même jour), ils ont bravé les défis. Par la grâce souveraine de Dieu, cette œuvre fut implantée avec un succès retentissant, et les fruits bénis de ce travail demeurent visibles et stables jusqu’à ce jour.
+            </p>
+
+            <p>
+                Lors de la Pentecôte 2023, il est consacré Ancien et reçoit officiellement la lourde mais précieuse responsabilité de Président du Département d’Évangélisation de la section Christ Rédempteur.
+            </p>
+
+            <p>
+                À la Pentecôte 2024, une nouvelle œuvre de réveil lui est assignée : la redynamisation de l'extension <strong>Christ Rédempteur 6</strong>. Travaillant en parfaite symbiose avec l’Ancien Pascal ainsi qu’une équipe d’évangélistes zélés provenant de différentes assemblées Christ Rédempteur, ils raniment le feu. Après un labeur accompli avec engagement, foi et persévérance, le relais spirituel fut transmis avec joie au Pasteur Sam, qui poursuit aujourd’hui cette belle œuvre.
+            </p>
+
+            <p>
+                Sous la direction spirituelle inspirante du <strong>Révérend Pasteur Jean-Baptiste Mikombe Kalenga</strong>, plusieurs missions clés lui ont été confiées au service de l’Église et de l’avancement du Royaume de Dieu. Par la grâce divine agissante, les résultats obtenus au fil de ces épreuves ont toujours été profondément satisfaisants devant Dieu et devant Ses serviteurs.
+            </p>
+
+            <p>
+                Ainsi, la <strong>Pentecôte 2026</strong> marque un jalon exceptionnel et divin dans son parcours spirituel avec sa consécration pastorale solennelle, venant confirmer publiquement l’appel de Dieu sur sa vie et laissant désormais l’empreinte indélébile du ministère pastoral dans son existence ainsi que dans l’Église universelle.
+            </p>
+
+            <p class="font-sans text-sm italic text-celestial-500 border-t border-celestial-100 dark:border-celestial-850 pt-6">
+                Le Pasteur Claude Mwamba Mbayo exprime enfin sa profonde gratitude à tous les compagnons de l’École des Serviteurs, à l’équipe dynamique d’évangélisation ainsi qu’au quartier spirituel Samarie, pour leur précieux accompagnement, leurs prières ferventes et leur soutien constant dans l’œuvre glorieuse du Seigneur.
+            </p>
+        </article>
+
+    </div>
+</main>
+
+<!-- TIMELINE SECTION (CHRONOLOGIE) -->
+<section id="timeline" class="bg-white dark:bg-celestial-900 border-y border-celestial-100 dark:border-celestial-850 py-20 transition-all">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center space-y-4 mb-16">
+            <p class="font-sans text-xs tracking-widest uppercase text-celestial-500 font-bold">Chronologie Sacerdotale</p>
+            <h2 class="font-display text-3xl sm:text-4xl text-celestial-950 dark:text-white font-normal">
+                Les Jalons d'une <span class="text-celestial-500 italic">Vie de Service</span>
+            </h2>
+            <div class="w-16 h-1 bg-celestial-300 mx-auto"></div>
+            
+            <!-- Filtres Chronologie -->
+            <div class="flex flex-wrap justify-center gap-2 pt-6 font-sans text-[11px] tracking-wider uppercase">
+                <button onclick="filterTimeline('all')" class="timeline-filter-btn active bg-celestial-500 text-white px-4 py-2 rounded-full font-bold transition-all">Toutes</button>
+                <button onclick="filterTimeline('milestone')" class="timeline-filter-btn bg-celestial-50 dark:bg-celestial-950 text-celestial-700 dark:text-celestial-300 px-4 py-2 rounded-full font-bold transition-all border border-celestial-100 dark:border-celestial-800">Sacrements</button>
+                <button onclick="filterTimeline('mission')" class="timeline-filter-btn bg-celestial-50 dark:bg-celestial-950 text-celestial-700 dark:text-celestial-300 px-4 py-2 rounded-full font-bold transition-all border border-celestial-100 dark:border-celestial-800">Missions & Likasi</button>
+            </div>
+        </div>
+
+        <div class="relative border-l border-celestial-300/60 ml-4 md:ml-32 space-y-12">
+            
+            <!-- ÉVÉNEMENT 1 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="milestone">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">DÉC. 1998</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Conversion & Baptême</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Rencontre salvatrice avec Jésus-Christ et baptême par immersion solennel au sein de la 30ème Communauté Pentecôtiste au Congo (CPCO).
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 2 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="milestone">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">ANNÉE 2006</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Consécration au Diaconat</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Établi Diacre à l'Église Sion Golf sous la conduite du Révérend Pasteur Étienne Mukalay, marquant un engagement sacerdotal précoce.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 3 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="mission">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">DÉC. 2020</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Arrivée Professionnelle à Likasi</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Installation professionnelle pour piloter une agence locale. La main souveraine de Dieu le guide vers son intégration à l'Église Christ Rédempteur en 2021.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 4 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="mission">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">ANNÉE 2022</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Implantation de Christ Rédempteur 7</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Mandaté pour implanter cette nouvelle assemblée avec une équipe de 15 évangélistes engagés et le Pasteur Guy. L'œuvre demeure prospère et stable.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 5 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="milestone">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">PENTECÔTE 2023</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Consécration comme Ancien</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Ordination en qualité d'Ancien d'Église et nomination à la Présidence du Département d'Évangélisation de la section Christ Rédempteur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 6 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="mission">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-400 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-200"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0">PENTECÔTE 2024</span>
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-100 dark:border-celestial-850 shadow-sm">
+                    <h4 class="font-display text-lg text-celestial-950 dark:text-white">Redynamisation de Christ Rédempteur 6</h4>
+                    <p class="text-sm text-celestial-700 dark:text-celestial-300 font-sans mt-2">
+                        Mission de revitalisation spirituelle menée en collaboration étroite avec l'Ancien Pascal, avant de transmettre le flambeau spirituel au Pasteur Sam.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ÉVÉNEMENT 7 -->
+            <div class="timeline-event relative pl-8 md:pl-12 transition-all duration-300" data-cat="milestone">
+                <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-500 border-4 border-white dark:border-celestial-900 ring-4 ring-celestial-300"></span>
+                <span class="md:absolute md:-left-[120px] md:top-1.5 font-sans font-bold text-xs text-celestial-600 dark:text-celestial-400 uppercase tracking-wider block mb-2 md:mb-0 font-extrabold">PENTECÔTE 2026</span>
+                <div class="bg-celestial-100/60 dark:bg-celestial-950 p-6 rounded-xl border border-celestial-300 dark:border-celestial-800 shadow-md ring-2 ring-celestial-300 bg-gradient-to-r from-celestial-50 to-white dark:from-celestial-900 dark:to-celestial-950">
+                    <h4 class="font-display text-xl text-celestial-700 dark:text-celestial-300 font-bold">Consécration Pastorale Solennelle</h4>
+                    <p class="text-sm text-celestial-900 dark:text-celestial-200 font-serif mt-2">
+                        Étape mémorable sous la direction spirituelle inspirante du Révérend Pasteur Jean-Baptiste Mikombe Kalenga, confirmant publiquement l'appel divin.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ACADEMIC & SPIRITUAL EDUCATION -->
+<section id="formation" class="bg-gradient-to-b from-celestial-700 to-celestial-900 py-20 text-white relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        
+        <div class="text-center space-y-4 mb-16">
+            <p class="font-sans text-xs tracking-widest uppercase text-celestial-200 font-bold">Théologie & Enseignement</p>
+            <h2 class="font-display text-3xl sm:text-4xl text-white font-normal">
+                Parcours Académique & <span class="text-celestial-200 italic">Fondation Théologique</span>
+            </h2>
+            <div class="w-16 h-1 bg-celestial-300 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-sans">
+            
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300">
+                <div class="w-12 h-12 bg-white/10 text-celestial-200 rounded-xl flex items-center justify-center mb-6">
+                    <i data-lucide="award"></i>
+                </div>
+                <h3 class="font-display text-lg text-white font-semibold mb-2">Campus pour Christ</h3>
+                <p class="text-celestial-100 text-sm leading-relaxed">
+                    Formation pratique axée sur l'évangélisation chrétienne, le discipolat de masse et l'implantation de nouvelles églises.
+                </p>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300">
+                <div class="w-12 h-12 bg-white/10 text-celestial-200 rounded-xl flex items-center justify-center mb-6">
+                    <i data-lucide="book-open-check"></i>
+                </div>
+                <h3 class="font-display text-lg text-white font-semibold mb-2">Cours Bibliques Emmaüs</h3>
+                <p class="text-celestial-100 text-sm leading-relaxed">
+                    Étude systématique de la Parole de Dieu et approfondissement spirituel pour fortifier la doctrine.
+                </p>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300">
+                <div class="w-12 h-12 bg-white/10 text-celestial-200 rounded-xl flex items-center justify-center mb-6">
+                    <i data-lucide="graduation-cap"></i>
+                </div>
+                <h3 class="font-display text-lg text-white font-semibold mb-2">Veritas College</h3>
+                <p class="text-celestial-100 text-sm leading-relaxed">
+                    Formation théologique robuste, leadership pastoral et herméneutique biblique avancée.
+                </p>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300">
+                <div class="w-12 h-12 bg-white/10 text-celestial-200 rounded-xl flex items-center justify-center mb-6">
+                    <i data-lucide="users"></i>
+                </div>
+                <h3 class="font-display text-lg text-white font-semibold mb-2">Formation AIFB</h3>
+                <p class="text-celestial-100 text-sm leading-relaxed">
+                    Diplômé de l'Association Internationale des Formateurs Bibliques pour enseigner et équiper les disciples.
+                </p>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300">
+                <div class="w-12 h-12 bg-white/10 text-celestial-200 rounded-xl flex items-center justify-center mb-6">
+                    <i data-lucide="compass"></i>
+                </div>
+                <h3 class="font-display text-lg text-white font-semibold mb-2">Études Bibliques</h3>
+                <p class="text-celestial-100 text-sm leading-relaxed">
+                    Recherche théologique et exégèse continue pour l'instruction spirituelle efficace de l'assemblée.
+                </p>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 hover:border-celestial-300 p-8 rounded-2xl hover:bg-white/10 transition-all-300 flex flex-col justify-center items-center text-center">
+                <span class="text-4xl text-celestial-200 mb-2 fill-current">🕊</span>
+                <p class="font-serif italic text-celestial-100 text-sm p-4">
+                    « Étudie pour te présenter devant Dieu comme un homme éprouvé... dispense droitement la parole de la vérité. »
+                </p>
+                <span class="text-[10px] text-celestial-250 uppercase tracking-wider font-semibold">2 Timothée 2:15</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- LIVE GUESTBOOK & PUBLIC PRAYER WALL -->
+<section id="prayer-wall" class="py-20 bg-celestial-50 dark:bg-celestial-950 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center space-y-4 mb-16">
+            <p class="font-sans text-xs tracking-widest uppercase text-celestial-600 dark:text-celestial-400 font-bold">Union fraternelle</p>
+            <h2 class="font-display text-3xl sm:text-4xl text-celestial-950 dark:text-white font-normal">
+                Livre d'Or & <span class="text-celestial-500 italic">Mur de Prière Public</span>
+            </h2>
+            <div class="w-16 h-1 bg-celestial-350 mx-auto"></div>
+            <p class="text-sm font-sans max-w-xl mx-auto text-celestial-600 dark:text-celestial-300">
+                Soutenez le Pasteur Claude en partageant un mot de félicitations pour sa consécration pastorale ou un sujet de prière communautaire.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- FORMULAIRE PUBLIC -->
+            <div class="lg:col-span-5 bg-white dark:bg-celestial-900 rounded-2xl p-6 sm:p-8 shadow-xl border border-celestial-100 dark:border-celestial-800 font-sans">
+                <h3 class="font-display text-lg text-celestial-950 dark:text-white mb-6">Ajouter une Note ou Prière</h3>
+                
+                <form id="publicWallForm" onsubmit="handlePublicPost(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Votre Nom ou Famille</label>
+                        <input type="text" id="wallName" placeholder="Ex: Sœur Sarah ou Famille Kadi" required class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-celestial-50/50 dark:bg-celestial-950 text-celestial-950 dark:text-white text-xs focus:ring-2 focus:ring-celestial-300 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Nature du message</label>
+                        <select id="wallType" class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-celestial-50/50 dark:bg-celestial-950 text-celestial-950 dark:text-white text-xs focus:ring-2 focus:ring-celestial-300 focus:outline-none">
+                            <option value="congratulations">✍ Félicitations & Encouragement (Livre d'or)</option>
+                            <option value="prayer_request">🙏 Requête de Prière (Mur communautaire)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Votre message de grâce</label>
+                        <textarea id="wallMessage" rows="4" placeholder="Que le Seigneur vous bénisse et vous fortifie..." required class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-celestial-50/50 dark:bg-celestial-950 text-celestial-950 dark:text-white text-xs focus:ring-2 focus:ring-celestial-300 focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-celestial-500 hover:bg-celestial-600 text-white py-3 rounded-lg font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="send" class="w-4 h-4"></i> Publier sur le mur
+                    </button>
+                </form>
+            </div>
+
+            <!-- FLUX DE MESSAGES EN DIRECT -->
+            <div class="lg:col-span-7 flex flex-col space-y-6">
+                <div class="flex items-center justify-between font-sans text-xs">
+                    <span class="font-bold text-celestial-500 dark:text-celestial-400 uppercase tracking-widest">Derniers messages partagés</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="loadWallEntries('all')" class="feed-filter active text-celestial-500 font-bold">Tout</button>
+                        <span class="text-celestial-300">|</span>
+                        <button onclick="loadWallEntries('congratulations')" class="feed-filter text-celestial-400 hover:text-celestial-500">Livre d'or</button>
+                        <span class="text-celestial-300">|</span>
+                        <button onclick="loadWallEntries('prayer_request')" class="feed-filter text-celestial-400 hover:text-celestial-500">Prières</button>
+                    </div>
+                </div>
+
+                <!-- Conteneur Dynamique -->
+                <div id="wall-feed" class="space-y-4 max-h-[450px] overflow-y-auto pr-2">
+                    <div class="text-center py-10 font-sans text-celestial-400 text-xs">
+                        <i data-lucide="loader" class="w-8 h-8 animate-spin mx-auto text-celestial-400 mb-3"></i>
+                        Chargement des messages en cours...
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- PRIVATE PRAYER REQUEST & CONTACT -->
+<section id="contact" class="bg-white dark:bg-celestial-900 py-20 transition-all border-t border-celestial-100 dark:border-celestial-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- PANNEAU INFOS (GAUCHE) -->
+            <div class="lg:col-span-5 flex flex-col justify-between space-y-8">
+                <div class="space-y-4 text-left">
+                    <p class="font-sans text-xs tracking-widest uppercase text-celestial-550 font-bold">Une écoute attentive</p>
+                    <h2 class="font-display text-3xl sm:text-4xl text-celestial-950 dark:text-white font-normal">
+                        Entretien Spirituel <br>& <span class="text-celestial-500 italic">Intercession</span>
+                    </h2>
+                    <div class="w-16 h-1 bg-celestial-300"></div>
+                    <p class="text-sm sm:text-base font-serif text-celestial-700 dark:text-celestial-300 leading-relaxed pt-2">
+                        Vous traversez un défi ou désirez rendre grâce pour un miracle reçu ? Écrivez de manière sécurisée et confidentielle au Pasteur Claude. Vos intentions seront fidèlement portées en intercession.
+                    </p>
+                </div>
+
+                <div class="bg-celestial-50 dark:bg-celestial-950 p-6 rounded-2xl border border-celestial-100 dark:border-celestial-800 space-y-4 font-sans text-xs">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-celestial-100 text-celestial-600 flex items-center justify-center">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        </span>
+                        <div>
+                            <p class="text-celestial-400 font-bold uppercase tracking-widest text-[9px]">Lieu de culte principal</p>
+                            <p class="text-celestial-900 dark:text-white font-semibold mt-0.5">Église Christ Rédempteur, Likasi, RDC</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-celestial-100 text-celestial-600 flex items-center justify-center">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </span>
+                        <div>
+                            <p class="text-celestial-400 font-bold uppercase tracking-widest text-[9px]">Adresse Épître</p>
+                            <p class="text-celestial-900 dark:text-white font-semibold mt-0.5">contact@pasteurclaudemwamba.org</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU FORMULAIRE CONFIDENTIEL (DROITE) -->
+            <div class="lg:col-span-7 bg-celestial-50 dark:bg-celestial-950 p-6 sm:p-8 rounded-2xl border border-celestial-100 dark:border-celestial-800 font-sans">
+                
+                <div id="privateSuccessBanner" class="hidden mb-6 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-500/30 text-emerald-800 dark:text-emerald-400 p-4 rounded-xl text-xs flex items-center gap-3">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-emerald-500"></i>
+                    <div>
+                        <strong class="font-bold">Gloire à Dieu !</strong> Votre message et intention de prière confidentielle ont bien été transmis au Pasteur Claude. Que Sa paix céleste vous garde.
+                    </div>
+                </div>
+
+                <form id="privatePrayerForm" onsubmit="handlePrivateSubmit(event)" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Votre nom complet</label>
+                            <input type="text" id="privateName" placeholder="Ex: Jean Mukendi" required class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-white dark:bg-celestial-900 text-celestial-950 dark:text-white focus:ring-2 focus:ring-celestial-300 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Contact (Téléphone / Email)</label>
+                            <input type="text" id="privateContact" placeholder="Ex: +243..." class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-white dark:bg-celestial-900 text-celestial-950 dark:text-white focus:ring-2 focus:ring-celestial-300 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Sujet principal de l'Épître</label>
+                        <select id="privateSubject" class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-white dark:bg-celestial-900 text-celestial-950 dark:text-white focus:ring-2 focus:ring-celestial-300 focus:outline-none">
+                            <option value="prière">Requête de Prière Confidentielle</option>
+                            <option value="entretien">Demande d'Entretien Spirituel</option>
+                            <option value="action_de_grace">Témoignage & Action de Grâce</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block uppercase tracking-wider text-celestial-500 font-bold mb-2">Saisissez votre fardeau de prière ou message</label>
+                        <textarea id="privateMessage" rows="5" placeholder="Saisissez votre intention avec confiance ici..." required class="w-full p-3 rounded-lg border border-celestial-100 dark:border-celestial-800 bg-white dark:bg-celestial-900 text-celestial-950 dark:text-white focus:ring-2 focus:ring-celestial-300 focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-celestial-500 hover:bg-celestial-600 text-white py-3.5 rounded-lg font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg shadow-celestial-300/20">
+                        <i data-lucide="shield" class="w-4 h-4"></i> Envoyer Confidentiellement
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- PIED DE PAGE (FOOTER) -->
+<footer class="bg-celestial-950 text-white py-16 px-4 border-t border-celestial-800 text-center font-sans">
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- EMPLACEMENT DU LOGO DE L'ÉGLISE (FOOTER) -->
+        <!-- Remplacer le bloc SVG ci-dessous par : <img src="images/logo-church-footer.png" alt="Logo" class="w-12 h-12 mx-auto object-contain"> -->
+        <div class="w-12 h-12 text-celestial-300 mx-auto" title="Logo Église Christ Rédempteur">
+            <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-current" stroke-width="4">
+                <circle cx="50" cy="50" r="45" fill="none"/>
+                <path d="M50 15 L50 85 M25 38 L75 38" stroke-width="6"/>
+                <path d="M35 70 Q50 50 65 70" stroke-width="3"/>
+            </svg>
+        </div>
+        
+        <h2 class="font-display text-xl tracking-wider text-white">Pasteur Claude Mwamba Mbayo</h2>
+        <p class="text-xs text-celestial-300 max-w-md mx-auto leading-relaxed">
+            Église Christ Rédempteur · Extension Likasi <br>
+            Consécration Pastorale Solennelle · Pentecôte 2026
+        </p>
+        <div class="flex justify-center gap-6 pt-4 text-xs text-celestial-200">
+            <a href="#bio" class="hover:underline">Biographie</a>
+            <span>•</span>
+            <a href="#timeline" class="hover:underline">Parcours</a>
+            <span>•</span>
+            <a href="#prayer-wall" class="hover:underline">Livre d'or</a>
+        </div>
+        <p class="text-[10px] text-celestial-500 pt-8">
+            © 2026 Plateforme Sacerdotale Officielle Pasteur Claude. Tous droits réservés.
+        </p>
+    </div>
+</footer>
+
+<!-- LOGIQUE APPLICATIVE COMPLETE -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'pst-claude-biography';
+    
+    let db = null;
+    let auth = null;
+    let currentFeedCategory = 'all';
+    let isFirebaseActive = false;
+
+    // Clés de stockage local pour le mode déconnecté / sécurisé
+    const STORAGE_KEY_WALL = 'pst_claude_wall_data';
+    const STORAGE_KEY_PRIVATE = 'pst_claude_private_requests';
+
+    // Données initiales d'édification (secours local de départ)
+    const defaultMockData = [
+        { id: "mock1", name: "Ancien Pascal", type: "congratulations", message: "Toutes mes félicitations bien-aimé Pasteur Claude pour cette consécration pastorale. Que le feu de l'Esprit grandisse encore pour cette moisson.", amens: 25, createdAt: Date.now() - 3600000 * 2 },
+        { id: "mock2", name: "Sœur Déborah", type: "prayer_request", message: "Nous demandons l'intercession de la cellule d'intercession pour notre famille en cette saison de réveil.", amens: 41, createdAt: Date.now() - 3600000 * 5 },
+        { id: "mock3", name: "Frère Samuel", type: "congratulations", message: "Un parcours modèle d'engagement et de fidélité depuis le MCPD. Gloire à l'Éternel !", amens: 18, createdAt: Date.now() - 3600000 * 12 }
+    ];
+
+    // Fonctions d'accès au stockage local persistant du navigateur
+    function getLocalWallEntries() {
+        const stored = localStorage.getItem(STORAGE_KEY_WALL);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                return defaultMockData;
+            }
+        }
+        localStorage.setItem(STORAGE_KEY_WALL, JSON.stringify(defaultMockData));
+        return defaultMockData;
+    }
+
+    function saveLocalWallEntries(entries) {
+        localStorage.setItem(STORAGE_KEY_WALL, JSON.stringify(entries));
+        window.activeWallEntries = entries;
+        displayWallEntries();
+    }
+
+    async function initFirebaseAndData() {
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                await signInAnonymously(auth);
+                isFirebaseActive = true;
+                subscribeToWallFeed();
+            } else {
+                switchToLocalOnlyMode("Mode de démonstration hors-ligne activé.");
+            }
+        } catch (error) {
+            switchToLocalOnlyMode("Mode sécurisé hors-ligne activé.");
+        }
+    }
+
+    function switchToLocalOnlyMode(reason) {
+        isFirebaseActive = false;
+        console.log(`[INFO SANCTUAIRE] Moteur de persistance locale activé : ${reason}`);
+        window.activeWallEntries = getLocalWallEntries();
+        displayWallEntries();
+    }
+
+    function subscribeToWallFeed() {
+        const q = collection(db, 'artifacts', appId, 'public', 'data', 'wall');
+        onSnapshot(q, (snapshot) => {
+            let entries = [];
+            snapshot.forEach((doc) => {
+                entries.push({ id: doc.id, ...doc.data() });
+            });
+            entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            window.activeWallEntries = entries;
+            displayWallEntries();
+        }, (error) => {
+            if (error.code === 'permission-denied' || error.message.toLowerCase().includes('permission')) {
+                switchToLocalOnlyMode("Permissions restreintes sur le serveur cloud. Vos interactions sont persistées en local.");
+            } else {
+                switchToLocalOnlyMode(`Erreur de connexion : ${error.message}`);
+            }
+        });
+    }
+
+    window.handlePublicPost = async function(event) {
+        event.preventDefault();
+        const nameInput = document.getElementById('wallName');
+        const typeInput = document.getElementById('wallType');
+        const msgInput = document.getElementById('wallMessage');
+
+        const newPost = {
+            name: nameInput.value.trim(),
+            type: typeInput.value,
+            message: msgInput.value.trim(),
+            amens: 0,
+            createdAt: Date.now()
+        };
+
+        if (isFirebaseActive && db) {
+            try {
+                const wallRef = collection(db, 'artifacts', appId, 'public', 'data', 'wall');
+                await addDoc(wallRef, newPost);
+                showToast("Votre mot de grâce a été publié avec succès !");
+            } catch (err) {
+                console.warn("Échec d'écriture Cloud. Bascule en local de secours.");
+                fallbackLocalAdd(newPost);
+            }
+        } else {
+            fallbackLocalAdd(newPost);
+        }
+
+        nameInput.value = '';
+        msgInput.value = '';
+    };
+
+    function fallbackLocalAdd(newPost) {
+        const currentLocal = getLocalWallEntries();
+        const localizedPost = { id: 'local-' + Date.now(), ...newPost };
+        currentLocal.unshift(localizedPost);
+        saveLocalWallEntries(currentLocal);
+        showToast("Votre message a été publié et sauvegardé localement !");
+    }
+
+    window.addAmen = async function(id) {
+        if (isFirebaseActive && db && !id.startsWith('local-') && !id.startsWith('mock')) {
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'wall', id);
+                await updateDoc(docRef, { amens: increment(1) });
+                showToast("Amen ! Votre association spirituelle est enregistrée.");
+            } catch (err) {
+                console.warn("Mise à jour Cloud impossible. Enregistrement local.");
+                fallbackLocalAmen(id);
+            }
+        } else {
+            fallbackLocalAmen(id);
+        }
+    };
+
+    function fallbackLocalAmen(id) {
+        const currentLocal = getLocalWallEntries();
+        const entry = currentLocal.find(e => e.id === id);
+        if (entry) {
+            entry.amens = (entry.amens || 0) + 1;
+            saveLocalWallEntries(currentLocal);
+            showToast("Amen ! Prière soutenue.");
+        }
+    }
+
+    window.loadWallEntries = function(category) {
+        currentFeedCategory = category;
+        document.querySelectorAll('.feed-filter').forEach(btn => {
+            btn.classList.remove('active', 'text-celestial-500', 'font-bold');
+            btn.classList.add('text-celestial-400');
+        });
+        event.target.classList.add('active', 'text-celestial-500', 'font-bold');
+        event.target.classList.remove('text-celestial-400');
+        displayWallEntries();
+    };
+
+    function displayWallEntries() {
+        const feedContainer = document.getElementById('wall-feed');
+        if (!feedContainer) return;
+
+        const filtered = (window.activeWallEntries || []).filter(entry => {
+            if (currentFeedCategory === 'all') return true;
+            return entry.type === currentFeedCategory;
+        });
+
+        if (filtered.length === 0) {
+            feedContainer.innerHTML = `
+                <div class="text-center py-10 font-sans text-celestial-400 text-xs bg-white dark:bg-celestial-900 rounded-2xl border border-celestial-100 dark:border-celestial-800">
+                    <p>Aucun témoignage ou requête dans cette catégorie.</p>
+                </div>
+            `;
+            return;
+        }
+
+        feedContainer.innerHTML = filtered.map(entry => {
+            const isPrayer = entry.type === 'prayer_request';
+            const badgeText = isPrayer ? '🙏 Requête de Prière' : '✍ Livre d\'Or / Vœux';
+            const badgeClass = isPrayer ? 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-100 dark:border-amber-900' : 'bg-celestial-50 text-celestial-800 dark:bg-celestial-950/40 dark:text-celestial-400 border border-celestial-100 dark:border-celestial-900';
+            const buttonText = isPrayer ? "S'unir d'un Amen" : "Soutenir d'un Amen";
+
+            return `
+                <div class="bg-white dark:bg-celestial-900 p-5 rounded-2xl shadow-md border border-celestial-100 dark:border-celestial-800 transition-all hover:border-celestial-300">
+                    <div class="flex items-center justify-between mb-3 font-sans">
+                        <span class="text-xs font-bold text-celestial-900 dark:text-white">${entry.name}</span>
+                        <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-1 rounded ${badgeClass}">${badgeText}</span>
+                    </div>
+                    <p class="font-serif italic text-celestial-700 dark:text-celestial-300 text-sm leading-relaxed mb-4">
+                        « ${entry.message} »
+                    </p>
+                    <div class="flex items-center justify-between font-sans text-xs">
+                        <button onclick="addAmen('${entry.id}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-celestial-50 dark:bg-celestial-950 text-celestial-700 dark:text-celestial-300 hover:bg-celestial-100 dark:hover:bg-celestial-800 hover:text-celestial-600 transition-colors font-medium text-[10px]">
+                            <span>🕊</span> ${buttonText}
+                        </button>
+                        <span class="text-[10px] text-celestial-400 flex items-center gap-1">
+                            <strong class="text-celestial-500 font-bold">${entry.amens || 0}</strong> Amens reçus
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    window.handlePrivateSubmit = async function(event) {
+        event.preventDefault();
+        const name = document.getElementById('privateName').value.trim();
+        const contact = document.getElementById('privateContact').value.trim();
+        const subject = document.getElementById('privateSubject').value;
+        const message = document.getElementById('privateMessage').value.trim();
+
+        const privateRequest = {
+            senderName: name,
+            senderContact: contact,
+            subject: subject,
+            message: message,
+            submittedAt: Date.now()
+        };
+
+        if (isFirebaseActive && db) {
+            try {
+                const requestRef = collection(db, 'artifacts', appId, 'public', 'data', 'private_requests');
+                await addDoc(requestRef, privateRequest);
+            } catch (err) {
+                console.warn("Échec d'envoi Cloud. Enregistrement sécurisé local.");
+                savePrivateRequestLocal(privateRequest);
+            }
+        } else {
+            savePrivateRequestLocal(privateRequest);
+        }
+
+        document.getElementById('privateSuccessBanner').classList.remove('hidden');
+        document.getElementById('privatePrayerForm').reset();
+        document.getElementById('privateSuccessBanner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast("Votre requête confidentielle a été transmise.");
+    };
+
+    function savePrivateRequestLocal(request) {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY_PRIVATE) || '[]');
+        stored.push(request);
+        localStorage.setItem(STORAGE_KEY_PRIVATE, JSON.stringify(stored));
+    }
+
+    window.onload = function() {
+        initFirebaseAndData();
+        lucide.createIcons();
+    };
+</script>
+
+<script>
+    // Base de données des versets bibliques
+    const verses = [
+        { text: "« Ce n’est ni par la puissance, ni par la force, mais c’est par Mon Esprit, dit l’Éternel des armées. »", ref: "Zacharie 4:6", cat: "esprit" },
+        { text: "« Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance. »", ref: "Jérémie 29:11", cat: "paix" },
+        { text: "« Recommande ton sort à l'Éternel, mets en lui ta confiance, et il agira. »", ref: "Psaume 37:5", cat: "foi" },
+        { text: "« Tout est possible à celui qui croit. »", ref: "Marc 9:23", cat: "foi" },
+        { text: "« Mais ceux qui se confient en l'Éternel renouvellent leur force. Ils prennent le vol comme les aigles ; ils courent, et ne se lassent point. »", ref: "Ésaïe 40:31", cat: "force" },
+        { text: "« L'Éternel est mon berger : je ne manquerai de rien. Il me fait reposer dans de verts pâturages. »", ref: "Psaume 23:1", cat: "paix" },
+        { text: "« Je puis tout par celui qui me fortifie. »", ref: "Philippiens 4:13", cat: "foi" },
+        { text: "« Que l'onction que vous avez reçue de lui demeure en vous, et vous n'avez pas besoin qu'on vous enseigne. »", ref: "1 Jean 2:27", cat: "esprit" }
+    ];
+
+    let filteredVerses = [...verses];
+    let currentVerseIdx = 0;
+
+    function filterVerses(cat) {
+        if (cat === 'all') {
+            filteredVerses = [...verses];
+        } else {
+            filteredVerses = verses.filter(v => v.cat === cat);
+        }
+        currentVerseIdx = 0;
+        displayVerse();
+    }
+
+    function nextVerse() {
+        if (filteredVerses.length === 0) return;
+        currentVerseIdx = (currentVerseIdx + 1) % filteredVerses.length;
+        displayVerse();
+    }
+
+    function displayVerse() {
+        const textEl = document.getElementById('verseBox');
+        const refEl = document.getElementById('refBox');
+        if (!textEl || !refEl || filteredVerses.length === 0) return;
+
+        textEl.style.opacity = 0;
+        refEl.style.opacity = 0;
+
+        setTimeout(() => {
+            textEl.innerHTML = filteredVerses[currentVerseIdx].text;
+            refEl.innerHTML = `— ${filteredVerses[currentVerseIdx].ref}`;
+            textEl.style.opacity = 1;
+            refEl.style.opacity = 1;
+        }, 200);
+    }
+
+    function readVerseAloud() {
+        if (!('speechSynthesis' in window)) {
+            showToast("Votre navigateur ne supporte pas la lecture audio.");
+            return;
+        }
+        window.speechSynthesis.cancel();
+
+        const currentVerse = filteredVerses[currentVerseIdx];
+        const speechText = `${currentVerse.text} Référence : ${currentVerse.ref}`;
+        
+        const utterance = new SpeechSynthesisUtterance(speechText);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.95;
+
+        window.speechSynthesis.speak(utterance);
+        showToast("Prédication vocale démarrée.");
+    }
+
+    function copyVerse() {
+        const text = document.getElementById('verseBox').innerText;
+        const ref = document.getElementById('refBox').innerText;
+        const fullText = `${text} ${ref}`;
+        
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = fullText;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+
+        showToast("Verset biblique copié dans le presse-papiers.");
+    }
+
+    // Gestion du Thème (Dark & Light)
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+
+    let audioCtx = null;
+    let synthOscs = [];
+    let synthGain = null;
+    let isSynthPlaying = false;
+
+    // Synthétiseur d'accords doux (Sol Majeur / Do Majeur céleste)
+    function initAmbienceSynth() {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        synthGain = audioCtx.createGain();
+        synthGain.connect(audioCtx.destination);
+    }
+
+    function startContemplativePad() {
+        if (!audioCtx) initAmbienceSynth();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        // Accords célestes en Do majeur harmonieux doux (0.02 volume)
+        const chordFrequencies = [261.63, 329.63, 392.00, 523.25];
+        synthGain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+
+        chordFrequencies.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const oscGain = audioCtx.createGain();
+            
+            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            // Modulation douce sans agressivité pour l'oreille
+            const modulator = audioCtx.createOscillator();
+            const modulatorGain = audioCtx.createGain();
+            modulator.frequency.value = 0.15 + (idx * 0.05);
+            modulatorGain.gain.value = 1.5;
+            modulator.connect(modulatorGain);
+            modulatorGain.connect(osc.frequency);
+
+            oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            oscGain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 3);
+
+            osc.connect(oscGain);
+            oscGain.connect(synthGain);
+
+            modulator.start();
+            osc.start();
+
+            synthOscs.push({ osc, oscGain, modulator });
+        });
+
+        isSynthPlaying = true;
+        document.getElementById('synth-status').innerText = 'Activée';
+        document.getElementById('synth-icon').setAttribute('data-lucide', 'pause');
+        lucide.createIcons();
+    }
+
+    function stopContemplativePad() {
+        synthOscs.forEach(o => {
+            try {
+                o.oscGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+                setTimeout(() => {
+                    o.osc.stop();
+                    o.modulator.stop();
+                }, 1600);
+            } catch(e){}
+        });
+        synthOscs = [];
+        isSynthPlaying = false;
+        document.getElementById('synth-status').innerText = 'Désactivée';
+        document.getElementById('synth-icon').setAttribute('data-lucide', 'music');
+        lucide.createIcons();
+    }
+
+    function toggleAmbience() {
+        if (isSynthPlaying) {
+            stopContemplativePad();
+        } else {
+            startContemplativePad();
+        }
+    }
+
+    function adjustVolume(val) {
+        if (synthGain && audioCtx) {
+            synthGain.gain.setValueAtTime(val, audioCtx.currentTime);
+        }
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        if (!toast || !toastMessage) return;
+
+        toastMessage.innerText = message;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3500);
+    }
+
+    function filterTimeline(cat) {
+        document.querySelectorAll('.timeline-filter-btn').forEach(btn => {
+            btn.classList.remove('bg-celestial-500', 'text-white', 'active');
+            btn.classList.add('bg-celestial-50', 'dark:bg-celestial-950', 'text-celestial-700', 'dark:text-celestial-300');
+        });
+        event.target.classList.add('bg-celestial-500', 'text-white', 'active');
+        event.target.classList.remove('bg-celestial-50', 'dark:bg-celestial-950', 'text-celestial-700', 'dark:text-celestial-300');
+
+        document.querySelectorAll('.timeline-event').forEach(evt => {
+            if (cat === 'all' || evt.getAttribute('data-cat') === cat) {
+                evt.style.display = 'block';
+                setTimeout(() => { evt.style.opacity = '1'; }, 100);
+            } else {
+                evt.style.opacity = '0';
+                setTimeout(() => { evt.style.display = 'none'; }, 200);
+            }
+        });
+    }
+</script>
+</body>
+</html>
